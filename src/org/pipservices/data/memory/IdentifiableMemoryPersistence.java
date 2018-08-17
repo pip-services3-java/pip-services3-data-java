@@ -155,7 +155,7 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
     	}
     }
 
-    public T create(String correlationId, T item) throws ApplicationException {
+    public T create(String correlationId, T item){
     	// Assign unique string key
     	if (item instanceof IStringIdentifiable && item.getId() == null)
     		((IStringIdentifiable)item).setId(IdGenerator.nextLong());
@@ -165,13 +165,18 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
 	    	
 	    	_logger.trace(correlationId, "Created %s", item);
 	    	
-	        save(correlationId);
+	        try {
+				save(correlationId);
+			} catch (ApplicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
         
         return item;
     }
 
-    public T update(String correlationId, T newItem) throws ApplicationException {
+    public T update(String correlationId, T newItem) {
     	synchronized (_lock) {
 	    	T oldItem = findOne(newItem.getId());
 	    	if (oldItem == null) return null;
@@ -183,13 +188,18 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
 
 	        _logger.trace(correlationId, "Updated %s", newItem);
 	        
-	        save(correlationId);
+	        try {
+				save(correlationId);
+			} catch (ApplicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        
 	        return newItem;
     	}
     }
 
-    public T set(String correlationId, T newItem) throws ApplicationException {
+    public T set(String correlationId, T newItem) {
     	// Assign unique string key
     	if (newItem instanceof IStringIdentifiable && newItem.getId() == null)
     		((IStringIdentifiable)newItem).setId(IdGenerator.nextLong());    	
@@ -209,13 +219,18 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
 	
 	        _logger.trace(correlationId, "Set %s", newItem);
 
-	    	save(correlationId);
+	    	try {
+				save(correlationId);
+			} catch (ApplicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        
 	        return newItem;
     	}
     }
 
-    public T deleteById(String correlationId, K id) throws ApplicationException {
+    public T deleteById(String correlationId, K id) {
     	synchronized (_lock) {
 	    	T item = findOne(id);
 	    	if (item == null) return null;
@@ -227,13 +242,18 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
 
 	        _logger.trace(correlationId, "Deleted %s", item);
 	        
-	        save(correlationId);
+	        try {
+				save(correlationId);
+			} catch (ApplicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        
 	        return item;
     	}
     }
     
-    public void deleteByIds(String correlationId, K[] id) throws ApplicationException {    	
+    public void deleteByIds(String correlationId, K[] id) {    	
     	boolean deleted = false;
     	List<T> result = new ArrayList<T>();
     	deleted = result.size() > 0;
@@ -243,6 +263,11 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
     			result.remove(item);
     	}
     	if(deleted)
-    		save(correlationId);
+			try {
+				save(correlationId);
+			} catch (ApplicationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     }
 }
