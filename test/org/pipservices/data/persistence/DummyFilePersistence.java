@@ -1,9 +1,8 @@
-package org.pipservices.data.file;
+package org.pipservices.data.persistence;
 
 import org.pipservices.commons.config.*;
 import org.pipservices.commons.errors.*;
 import org.pipservices.data.*;
-import org.pipservices.data.memory.*;
 
 public class DummyFilePersistence extends DummyMemoryPersistence {
 	protected JsonFilePersister<Dummy> _persister;

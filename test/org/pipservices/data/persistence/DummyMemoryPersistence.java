@@ -1,4 +1,4 @@
-package org.pipservices.data.memory;
+package org.pipservices.data.persistence;
 
 import org.pipservices.commons.data.*;
 import org.pipservices.commons.errors.*;

@@ -1,4 +1,4 @@
-package org.pipservices.data.memory;
+package org.pipservices.data.persistence;
 
 import java.util.*;
 import java.util.function.*;
