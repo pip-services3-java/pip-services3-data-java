@@ -3,6 +3,7 @@ package org.pipservices.data.memory;
 import org.pipservices.commons.data.*;
 import org.pipservices.commons.errors.*;
 import org.pipservices.data.*;
+import org.pipservices.data.persistence.IdentifiableMemoryPersistence;
 
 public class DummyMemoryPersistence extends IdentifiableMemoryPersistence<Dummy, String> implements IDummyPersistence {
 	

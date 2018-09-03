@@ -4,6 +4,7 @@ import org.pipservices.commons.config.*;
 import org.pipservices.commons.errors.*;
 import org.pipservices.data.*;
 import org.pipservices.data.memory.*;
+import org.pipservices.data.persistence.JsonFilePersister;
 
 public class DummyFilePersistence extends DummyMemoryPersistence {
 	protected JsonFilePersister<Dummy> _persister;
