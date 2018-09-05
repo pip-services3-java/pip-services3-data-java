@@ -8,7 +8,7 @@ import org.pipservices.commons.run.*;
 import org.pipservices.components.log.CompositeLogger;
 import org.pipservices.data.*;
 
-public abstract class MemoryPersistence<T> implements IReferenceable, IClosable, ICleanable {
+public abstract class MemoryPersistence<T> implements IReferenceable, IOpenable, ICleanable {
 	protected Class<?> _type;
 	protected String _typeName;
     
@@ -37,7 +37,7 @@ public abstract class MemoryPersistence<T> implements IReferenceable, IClosable,
     	_logger.setReferences(references);
     }
         
-    public boolean isOpened() {
+    public boolean isOpen() {
     	return _opened;
     }
     

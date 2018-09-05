@@ -4,7 +4,7 @@ import org.pipservices.commons.config.*;
 import org.pipservices.commons.data.*;
 import org.pipservices.commons.errors.*;
 
-public abstract class IdentifiableFilePersistence<T extends IIdentifiable<K>, K> extends IdentifiableMemoryPersistence<T, K> {
+public class IdentifiableFilePersistence<T extends IIdentifiable<K>, K> extends IdentifiableMemoryPersistence<T, K> {
     protected JsonFilePersister<T> _persister;
 
     // Pass the item type since Jackson cannot recognize type from generics

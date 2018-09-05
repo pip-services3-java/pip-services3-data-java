@@ -25,6 +25,11 @@ public class DummyFilePersistenceTest {
     }
 	
 	@Test
+    public void testBatchOperations() throws ApplicationException {
+        fixture.testBatchOperations();
+    }
+	
+	@Test
 	public void testLoadData() throws ApplicationException {
 		db.load(null);
 	}

@@ -10,7 +10,7 @@ import org.pipservices.commons.random.*;
 import org.pipservices.commons.errors.*;
 import org.pipservices.data.*;
 
-public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> 
+public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> 
 	extends MemoryPersistence<T>
 	implements IReconfigurable, IWriter<T, K>, IGetter<T, K>, ISetter<T> {
 	
@@ -30,7 +30,12 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
 
     public void configure(ConfigParams config) throws ConfigException {    	
         _maxPageSize = config.getAsIntegerWithDefault("max_page_size", _maxPageSize);
-    }     
+    }   
+    
+	@Override
+	public boolean isOpen() {
+		return this._opened;
+	}
     
     protected DataPage<T> getPageByFilter(String correlationId, Predicate<T> filter, 
 		PagingParams paging, Comparator<T> sort) {
@@ -250,6 +255,29 @@ public abstract class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, 
 			}
 	        
 	        return item;
+    	}
+    }
+    
+    public void deleteByFilter(String correlationId, Predicate<T> filter) {
+    	boolean deleted = false;
+    	synchronized (_lock) {
+    		Stream<T> items = this._items.stream();
+
+	        if (filter != null)
+	            items = items.filter(filter);
+	        deleted = items.count() > 0;
+	        List<T> data = items.collect(Collectors.toList());
+	        for (T item : data) {
+                data.remove(item);
+            }
+	        _logger.trace(correlationId, "Deleted {filteredItems.Count} items");
+	        
+	        if (deleted)
+				try {
+					save(correlationId);
+				} catch (ApplicationException e) {
+					e.printStackTrace();
+				}
     	}
     }
     

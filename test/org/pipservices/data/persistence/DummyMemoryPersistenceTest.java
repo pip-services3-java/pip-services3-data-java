@@ -18,5 +18,10 @@ public class DummyMemoryPersistenceTest {
     public void testCrudOperations() throws ApplicationException {
         fixture.testCrudOperations();
     }
+	
+	@Test
+    public void testBatchOperations() throws ApplicationException {
+        fixture.testBatchOperations();
+    }
 
 }
