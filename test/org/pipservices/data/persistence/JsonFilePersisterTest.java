@@ -3,15 +3,18 @@ package org.pipservices.data.persistence;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.pipservices.commons.config.ConfigParams;
 import org.pipservices.commons.errors.ConfigException;
 
 public class JsonFilePersisterTest {
 	
-	private final JsonFilePersister<Dummy> _persister;
+	private static JsonFilePersister<Dummy> _persister;
 
-    public JsonFilePersisterTest() {
+	@Before
+	public void setUpBeforeClass() {
         _persister = new JsonFilePersister<Dummy>(Dummy.class);
     }
     

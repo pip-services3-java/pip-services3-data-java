@@ -10,11 +10,19 @@ public class IdentifiableFilePersistence<T extends IIdentifiable<K>, K> extends 
     // Pass the item type since Jackson cannot recognize type from generics
     // This is related to Java type erasure issue
     protected IdentifiableFilePersistence(Class<T> type) {
-    	super(type);
-    	
-    	_persister = new JsonFilePersister<T>(type);
-    	_loader = _persister;
-    	_saver = _persister;
+    	this(type, null);
+    }
+    
+    protected IdentifiableFilePersistence(Class<T> type, JsonFilePersister<T> persister) {
+    	super(type, persister == null ? new JsonFilePersister<T>(type) : persister, 
+			    persister == null ? new JsonFilePersister<T>(type) : persister);
+	
+    	_persister = persister;
+//    	super(type);
+//    	
+//    	_persister = new JsonFilePersister<T>(type);
+//    	_loader = _persister;
+//    	_saver = _persister;
     }
 
     public void configure(ConfigParams config) throws ConfigException {

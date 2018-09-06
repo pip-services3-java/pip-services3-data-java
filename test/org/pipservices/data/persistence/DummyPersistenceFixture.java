@@ -18,7 +18,7 @@ public class DummyPersistenceFixture {
 	private final IDummyPersistence _persistence;
 
     public DummyPersistenceFixture(IDummyPersistence persistence) {
-    	assertNotNull(persistence);
+    	//assertNotNull(persistence);
 
         _persistence = persistence;
     }
@@ -84,6 +84,7 @@ public class DummyPersistenceFixture {
         
         // Read empty batch
         dummies = _persistence.getListByIds(null, new String[]{dummy1.getId(), dummy2.getId()});
+        //assertNull(dummies);
         assertEquals(0, dummies.size());
     }
 }

@@ -51,7 +51,7 @@ public abstract class MemoryPersistence<T> implements IReferenceable, IOpenable,
     	_opened = false;
     }
 
-    public void load(String correlationId) throws ApplicationException {
+    private void load(String correlationId) throws ApplicationException {
     	if (_loader != null) {
     		synchronized (_lock) {
     			_items = _loader.load(correlationId);

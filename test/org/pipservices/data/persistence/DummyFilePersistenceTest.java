@@ -8,16 +8,20 @@ public class DummyFilePersistenceTest {
     private static DummyFilePersistence db;
     private static DummyPersistenceFixture fixture;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-        db = new DummyFilePersistence("data/dummies.json");
-        fixture = new DummyPersistenceFixture(db);
-	}
-
 	@Before
-	public void setUp() throws ApplicationException {
-		db.clear(null);
+	public void setUpBeforeClass() throws Exception {
+        db = new DummyFilePersistence("./data/dummies.json");
+        fixture = new DummyPersistenceFixture(db);
+        db.open(null);
+        db.clear(null);
 	}
+	
+
+//	@Before
+//	public void setUp() throws ApplicationException {
+//		
+//		db.clear(null);
+//	}
 
 	@Test
     public void testCrudOperations() throws ApplicationException {
@@ -27,10 +31,5 @@ public class DummyFilePersistenceTest {
 	@Test
     public void testBatchOperations() throws ApplicationException {
         fixture.testBatchOperations();
-    }
-	
-	@Test
-	public void testLoadData() throws ApplicationException {
-		db.load(null);
-	}
+    }	
 }

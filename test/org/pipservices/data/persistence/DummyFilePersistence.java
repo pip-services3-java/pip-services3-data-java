@@ -10,10 +10,12 @@ public class DummyFilePersistence extends DummyMemoryPersistence {
 	protected JsonFilePersister<Dummy> _persister;
 
 	public DummyFilePersistence() {
-		this(null);
+		super();
 	}
 	
     public DummyFilePersistence(String path) {
+    	super();
+    	
     	_persister = new JsonFilePersister<Dummy>(Dummy.class, path);
     	_loader = _persister;
     	_saver = _persister;

@@ -40,10 +40,10 @@ public class JsonFilePersister<T> implements ILoader<T>, ISaver<T>, IConfigurabl
         _path = config.getAsString("path");
     }
     
-    public void setReferences(IReferences references)
-    {
-        _logger.setReferences(references);
-    }
+//    public void setReferences(IReferences references)
+//    {
+//        _logger.setReferences(references);
+//    }
 
     public List<T> load(String correlationId) throws ApplicationException {
         File file = new File(_path);

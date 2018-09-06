@@ -1,16 +1,18 @@
 package org.pipservices.data.persistence;
 
 import org.junit.*;
+import org.pipservices.commons.config.ConfigParams;
 import org.pipservices.commons.errors.*;
-import org.pipservices.data.*;
 
 public class DummyMemoryPersistenceTest {
     private static DummyMemoryPersistence db;
     private static DummyPersistenceFixture fixture;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUpBeforeClass() throws ConfigException {
         db = new DummyMemoryPersistence();
+		db.configure(new ConfigParams());
+
         fixture = new DummyPersistenceFixture(db);
 	}
 
