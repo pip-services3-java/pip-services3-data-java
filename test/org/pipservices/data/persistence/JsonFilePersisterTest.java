@@ -1,13 +1,10 @@
 package org.pipservices.data.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.pipservices.commons.config.ConfigParams;
-import org.pipservices.commons.errors.ConfigException;
+import org.junit.*;
+import org.pipservices.commons.config.*;
+import org.pipservices.commons.errors.*;
 
 public class JsonFilePersisterTest {
 	

@@ -37,7 +37,7 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 	}
 
 	protected DataPage<T> getPageByFilter(String correlationId, Predicate<T> filter, PagingParams paging,
-			Comparator<T> sort) {
+			Comparator<T> sort) throws ApplicationException {
 
 		synchronized (_lock) {
 			Stream<T> items = this._items.stream();
@@ -75,16 +75,19 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 	}
 
 	protected <S> DataPage<S> getPageByFilter(String correlationId, Predicate<T> filter, PagingParams paging,
-			Comparator<T> sort, Function<T, S> select) {
+			Comparator<T> sort, Function<T, S> select) throws ApplicationException {
 
 		DataPage<T> page = getPageByFilter(correlationId, filter, paging, sort);
+
 		Long total = page.getTotal();
 		List<S> items = page.getData().stream().map(select).collect(Collectors.toList());
 
 		return new DataPage<S>(items, total);
 	}
 
-	protected List<T> getListByFilter(String correlationId, Predicate<T> filter, Comparator<T> sort) {
+	protected List<T> getListByFilter(String correlationId, Predicate<T> filter, Comparator<T> sort)
+			throws ApplicationException {
+
 		synchronized (_lock) {
 			Stream<T> items = this._items.stream();
 
@@ -105,7 +108,7 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 	}
 
 	protected <S> List<S> getListByFilter(String correlationId, Predicate<T> filter, Comparator<T> sort,
-			Function<T, S> select) {
+			Function<T, S> select) throws ApplicationException {
 
 		List<S> items = getListByFilter(correlationId, filter, sort).stream().map(select).collect(Collectors.toList());
 		return items;
@@ -115,17 +118,17 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		Optional<T> item = _items.stream().filter((v) -> v.getId().equals(id)).findFirst();
 		return item.isPresent() ? item.get() : null;
 	}
-	
+
 	protected List<T> findAll(K[] ids) {
 		List<T> result = new ArrayList<T>();
-		for( K id : ids ) {
+		for (K id : ids) {
 			Optional<T> item = _items.stream().filter((v) -> v.getId().equals(id)).findAny();
 			result.add(item.isPresent() ? item.get() : null);
 		}
 		return result;
 	}
 
-	public T getOneById(String correlationId, K id) {
+	public T getOneById(String correlationId, K id) throws ApplicationException {
 		synchronized (_lock) {
 			T item = findOne(id);
 			if (item != null)
@@ -136,7 +139,7 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
-	public List<T> getListByIds(String correlationId, K[] id) {
+	public List<T> getListByIds(String correlationId, K[] id) throws ApplicationException {
 		List<T> result = new ArrayList<T>();
 		for (K oneId : id) {
 			T item = getOneById(correlationId, oneId);
@@ -146,7 +149,7 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		return result;
 	}
 
-	public T getOneRandom(String correlationId) {
+	public T getOneRandom(String correlationId) throws ApplicationException {
 		synchronized (_lock) {
 			if (_items.size() == 0)
 				return null;
@@ -162,7 +165,7 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
-	public T create(String correlationId, T item) {
+	public T create(String correlationId, T item) throws ApplicationException {
 		// Assign unique string key
 		if (item instanceof IStringIdentifiable && item.getId() == null)
 			((IStringIdentifiable) item).setId(IdGenerator.nextLong());
@@ -172,18 +175,13 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 
 			_logger.trace(correlationId, "Created %s", item);
 
-			try {
-				save(correlationId);
-			} catch (ApplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			save(correlationId);
 		}
 
 		return item;
 	}
 
-	public T update(String correlationId, T newItem) {
+	public T update(String correlationId, T newItem) throws ApplicationException {
 		synchronized (_lock) {
 			T oldItem = findOne(newItem.getId());
 			if (oldItem == null)
@@ -197,18 +195,13 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 
 			_logger.trace(correlationId, "Updated %s", newItem);
 
-			try {
-				save(correlationId);
-			} catch (ApplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			save(correlationId);
 
 			return newItem;
 		}
 	}
 
-	public T set(String correlationId, T newItem) {
+	public T set(String correlationId, T newItem) throws ApplicationException {
 		// Assign unique string key
 		if (newItem instanceof IStringIdentifiable && newItem.getId() == null)
 			((IStringIdentifiable) newItem).setId(IdGenerator.nextLong());
@@ -228,18 +221,13 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 
 			_logger.trace(correlationId, "Set %s", newItem);
 
-			try {
-				save(correlationId);
-			} catch (ApplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			save(correlationId);
 
 			return newItem;
 		}
 	}
 
-	public T deleteById(String correlationId, K id) {
+	public T deleteById(String correlationId, K id) throws ApplicationException {
 		synchronized (_lock) {
 			T item = findOne(id);
 			if (item == null)
@@ -253,57 +241,50 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 
 			_logger.trace(correlationId, "Deleted %s", item);
 
-			try {
-				save(correlationId);
-			} catch (ApplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			save(correlationId);
 
 			return item;
 		}
 	}
 
-	//Todo verify
-	public void deleteByFilter(String correlationId, Predicate<T> filter) {
+	public void deleteByFilter(String correlationId, Predicate<T> filter) throws ApplicationException {
 		int deleted = 0;
 		synchronized (_lock) {
-			Stream<T> items = this._items.stream();
+			Stream<T> items = _items.stream();
 
 			if (filter != null) {
 				items = items.filter(filter);
 				List<T> data = items.collect(Collectors.toList());
 				for (T item : data) {
-					data.remove(item);
-					deleted ++;
+					_items.remove(item);
+					deleted++;
 				}
-				_logger.trace(correlationId, "Deleted {filteredItems.Count} items");
+				_logger.trace(correlationId, "Deleted %d items", deleted);
 			}
-			if (deleted > 0)
-				try {
-					save(correlationId);
-				} catch (ApplicationException e) {
-					e.printStackTrace();
-				}
+			if (deleted > 0) {
+				save(correlationId);
+			}
 		}
 	}
 
-	public void deleteByIds(String correlationId, K[] ids) { 	
-    	boolean deleted = false;
-    	List<T> result = findAll(ids);
-    	deleted = result.size() > 0;
-    	for( K oneId : ids ) {
-    		T item = deleteById(correlationId, oneId);
-    		if ( item != null ) {
-    			result.remove(item);    			
-    		}    		
-    	}
-    	if(deleted)
-			try {
-				save(correlationId);
-			} catch (ApplicationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public void deleteByIds(String correlationId, K[] ids) throws ApplicationException {
+		List<K> idsList = Arrays.asList(ids);
+		
+		int deleted = 0;
+		synchronized (_lock) {
+			Stream<T> items = _items.stream();
+
+			items = items.filter(x -> idsList.contains(x.getId()));
+			List<T> data = items.collect(Collectors.toList());
+			for (T item : data) {
+				_items.remove(item);
+				deleted++;
 			}
+			_logger.trace(correlationId, "Deleted %d items", deleted);
+
+			if (deleted > 0) {
+				save(correlationId);
+			}
+		}
 	}
 }

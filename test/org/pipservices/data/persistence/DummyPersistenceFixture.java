@@ -3,9 +3,7 @@ package org.pipservices.data.persistence;
 import static org.junit.Assert.*;
 
 import java.util.*;
-import java.util.Date;
 
-import org.pipservices.commons.data.*;
 import org.pipservices.commons.errors.*;
 
 public class DummyPersistenceFixture {

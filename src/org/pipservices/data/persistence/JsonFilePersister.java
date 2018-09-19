@@ -5,8 +5,7 @@ import java.util.*;
 
 import org.pipservices.commons.config.*;
 import org.pipservices.commons.errors.*;
-import org.pipservices.components.log.CompositeLogger;
-import org.pipservices.commons.refer.IReferences;
+import org.pipservices.components.log.*;
 import org.pipservices.data.*;
 
 import com.fasterxml.jackson.databind.*;
@@ -16,7 +15,7 @@ public class JsonFilePersister<T> implements ILoader<T>, ISaver<T>, IConfigurabl
     protected Class<T> _type;
     protected JavaType _typeRef;
     protected String _path;
-    private CompositeLogger _logger = new CompositeLogger();
+    protected CompositeLogger _logger = new CompositeLogger();
 
     // Pass the item type since Jackson cannot recognize type from generics
     // This is related to Java type erasure issue

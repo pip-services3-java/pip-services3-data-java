@@ -2,7 +2,6 @@ package org.pipservices.data.persistence;
 
 import org.pipservices.commons.config.*;
 import org.pipservices.commons.errors.*;
-import org.pipservices.data.*;
 import org.pipservices.data.persistence.JsonFilePersister;
 
 

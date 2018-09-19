@@ -2,7 +2,6 @@ package org.pipservices.data.persistence;
 
 import org.junit.*;
 import org.pipservices.commons.errors.*;
-import org.pipservices.data.*;
 
 public class DummyFilePersistenceTest {
     private static DummyFilePersistence db;
