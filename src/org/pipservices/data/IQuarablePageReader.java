@@ -3,7 +3,21 @@ package org.pipservices.data;
 import org.pipservices.commons.data.*;
 import org.pipservices.commons.errors.*;
 
+/**
+ * Interface for data processing components that can query a page of data items.
+ */
 public interface IQuarablePageReader<T> {
-	DataPage<T> getPageByQuery(String correlationId, String query, PagingParams paging, SortParams sort) 
-		throws ApplicationException;
+	/**
+	 * Gets a page of data items using a query string.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param query         (optional) a query string
+	 * @param paging        (optional) paging parameters
+	 * @param sort          (optional) sort parameters
+	 * @return a list of items by query.
+	 * @throws ApplicationException when error occured.
+	 */
+	DataPage<T> getPageByQuery(String correlationId, String query, PagingParams paging, SortParams sort)
+			throws ApplicationException;
 }
