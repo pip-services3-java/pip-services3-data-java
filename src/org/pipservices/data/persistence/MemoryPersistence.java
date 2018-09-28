@@ -26,7 +26,7 @@ import org.pipservices.data.*;
  * 
  * ### Example ###
  * 
- * class MyMemoryPersistence extends MemoryPersistence&lt;MyData&gt; {
+ * class MyMemoryPersistence extends MemoryPersistence {
  *   public MyData getByName(String correlationId, String name) {
  *     MyData item = find(name); // search method
  *     ...

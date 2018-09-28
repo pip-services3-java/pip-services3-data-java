@@ -107,11 +107,31 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		_maxPageSize = config.getAsIntegerWithDefault("options.max_page_size", _maxPageSize);
 	}
 
+	/**
+	 * Checks if the component is opened.
+	 * 
+	 * @return true if the component has been opened and false otherwise.
+	 */
 	@Override
 	public boolean isOpen() {
 		return this._opened;
 	}
 
+	/**
+	 * Gets a page of data items retrieved by a given filter and sorted according to
+	 * sort parameters.
+	 * 
+	 * This method shall be called by a public getPageByFilter method from child
+	 * class that receives FilterParams and converts them into a filter function.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param filter        (optional) a filter function to filter items
+	 * @param paging        (optional) paging parameters
+	 * @param sort          (optional) sorting parameters
+	 * @return a data page of result by filter.
+	 * @throws ApplicationException when error occured.
+	 */
 	protected DataPage<T> getPageByFilter(String correlationId, Predicate<T> filter, PagingParams paging,
 			Comparator<T> sort) throws ApplicationException {
 
@@ -150,6 +170,22 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
+	/**
+	 * Gets a page of data items retrieved by a given filter and sorted according to
+	 * sort parameters.
+	 * 
+	 * This method shall be called by a public getPageByFilter method from child
+	 * class that receives FilterParams and converts them into a filter function.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param filter        (optional) a filter function to filter items
+	 * @param paging        (optional) paging parameters
+	 * @param sort          (optional) sorting parameters
+	 * @param select        (optional) projection parameters (not used yet)
+	 * @return a data page of result by filter.
+	 * @throws ApplicationException when error occured.
+	 */
 	protected <S> DataPage<S> getPageByFilter(String correlationId, Predicate<T> filter, PagingParams paging,
 			Comparator<T> sort, Function<T, S> select) throws ApplicationException {
 
@@ -161,6 +197,20 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		return new DataPage<S>(items, total);
 	}
 
+	/**
+	 * Gets a list of data items retrieved by a given filter and sorted according to
+	 * sort parameters.
+	 * 
+	 * This method shall be called by a public getListByFilter method from child
+	 * class that receives FilterParams and converts them into a filter function.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param filter        (optional) a filter function to filter items
+	 * @param sort          (optional) sorting parameters
+	 * @return a data list of results by filter.
+	 * @throws ApplicationException when error occured.
+	 */
 	protected List<T> getListByFilter(String correlationId, Predicate<T> filter, Comparator<T> sort)
 			throws ApplicationException {
 
@@ -183,6 +233,21 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
+	/**
+	 * Gets a list of data items retrieved by a given filter and sorted according to
+	 * sort parameters.
+	 * 
+	 * This method shall be called by a public getListByFilter method from child
+	 * class that receives FilterParams and converts them into a filter function.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param filter        (optional) a filter function to filter items
+	 * @param sort          (optional) sorting parameters
+	 * @param select        (optional) projection parameters (not used yet)
+	 * @return a data list of results by filter.
+	 * @throws ApplicationException when error occured.
+	 */
 	protected <S> List<S> getListByFilter(String correlationId, Predicate<T> filter, Comparator<T> sort,
 			Function<T, S> select) throws ApplicationException {
 
@@ -190,11 +255,23 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		return items;
 	}
 
+	/**
+	 * Finds one element by id.
+	 * 
+	 * @param id an id of data item.
+	 * @return data item.
+	 */
 	protected T findOne(K id) {
 		Optional<T> item = _items.stream().filter((v) -> v.getId().equals(id)).findFirst();
 		return item.isPresent() ? item.get() : null;
 	}
 
+	/**
+	 * Finds all elements by ids.
+	 * 
+	 * @param ids ids of data items.
+	 * @return data list of items.
+	 */
 	protected List<T> findAll(K[] ids) {
 		List<T> result = new ArrayList<T>();
 		for (K id : ids) {
@@ -204,6 +281,15 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		return result;
 	}
 
+	/**
+	 * Gets a data item by its unique id.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param id            an id of data item to be retrieved.
+	 * @return data item.
+	 * @throws ApplicationException when error occured.
+	 */
 	public T getOneById(String correlationId, K id) throws ApplicationException {
 		synchronized (_lock) {
 			T item = findOne(id);
@@ -215,9 +301,18 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
-	public List<T> getListByIds(String correlationId, K[] id) throws ApplicationException {
+	/**
+	 * Gets a list of data items retrieved by given unique ids.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param ids           ids of data items to be retrieved
+	 * @return a data list.
+	 * @throws ApplicationException when error occured.
+	 */
+	public List<T> getListByIds(String correlationId, K[] ids) throws ApplicationException {
 		List<T> result = new ArrayList<T>();
-		for (K oneId : id) {
+		for (K oneId : ids) {
 			T item = getOneById(correlationId, oneId);
 			if (item != null)
 				result.add(item);
@@ -225,6 +320,17 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		return result;
 	}
 
+	/**
+	 * Gets a random item from items that match to a given filter.
+	 * 
+	 * This method shall be called by a public getOneRandom method from child class
+	 * that receives FilterParams and converts them into a filter function.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @return a random item.
+	 * @throws ApplicationException when error occured.
+	 */
 	public T getOneRandom(String correlationId) throws ApplicationException {
 		synchronized (_lock) {
 			if (_items.size() == 0)
@@ -241,6 +347,15 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
+	/**
+	 * Creates a data item.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param item          an item to be created.
+	 * @return created item.
+	 * @throws ApplicationException when error occured.
+	 */
 	public T create(String correlationId, T item) throws ApplicationException {
 		// Assign unique string key
 		if (item instanceof IStringIdentifiable && item.getId() == null)
@@ -257,6 +372,15 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		return item;
 	}
 
+	/**
+	 * Updates a data item.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param newItem       an item to be updated.
+	 * @return updated item.
+	 * @throws ApplicationException when error occured.
+	 */
 	public T update(String correlationId, T newItem) throws ApplicationException {
 		synchronized (_lock) {
 			T oldItem = findOne(newItem.getId());
@@ -277,6 +401,16 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
+	/**
+	 * Sets a data item. If the data item exists it updates it, otherwise it create
+	 * a new data item.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param newItem       a item to be set.
+	 * @return updated item.
+	 * @throws ApplicationException when error occured.
+	 */
 	public T set(String correlationId, T newItem) throws ApplicationException {
 		// Assign unique string key
 		if (newItem instanceof IStringIdentifiable && newItem.getId() == null)
@@ -303,6 +437,15 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
+	/**
+	 * Deleted a data item by it's unique id.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param id            an id of the item to be deleted
+	 * @return deleted item.
+	 * @throws ApplicationException when error occured.
+	 */
 	public T deleteById(String correlationId, K id) throws ApplicationException {
 		synchronized (_lock) {
 			T item = findOne(id);
@@ -323,6 +466,17 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
+	/**
+	 * Deletes data items that match to a given filter.
+	 * 
+	 * This method shall be called by a public deleteByFilter method from child
+	 * class that receives FilterParams and converts them into a filter function.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param filter        (optional) a filter function to filter items.
+	 * @throws ApplicationException when error occured.
+	 */
 	public void deleteByFilter(String correlationId, Predicate<T> filter) throws ApplicationException {
 		int deleted = 0;
 		synchronized (_lock) {
@@ -343,6 +497,14 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
 		}
 	}
 
+	/**
+	 * Deletes multiple data items by their unique ids.
+	 * 
+	 * @param correlationId (optional) transaction id to trace execution through
+	 *                      call chain.
+	 * @param ids           ids of data items to be deleted.
+	 * @throws ApplicationException when error occured.
+	 */
 	public void deleteByIds(String correlationId, K[] ids) throws ApplicationException {
 		List<K> idsList = Arrays.asList(ids);
 

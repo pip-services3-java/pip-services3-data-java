@@ -32,7 +32,7 @@ import org.pipservices.commons.errors.*;
  *     MyData item = find(name); // search method
  *     ...
  *     return item;
- *   }); 
+ *   } 
  * 
  *   public MyData set(String correlatonId, MyData item) {
  *     this._items = filter(); // filter method
