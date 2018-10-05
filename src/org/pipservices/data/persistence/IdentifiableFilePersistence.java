@@ -7,7 +7,7 @@ import org.pipservices.commons.errors.*;
 /**
  * Abstract persistence component that stores data in flat files
  * and implements a number of CRUD operations over data items with unique ids.
- * The data items must implement {@link org.pipservices.commons.data.IIdentifiable} interface.
+ * The data items must implement <a href="https://raw.githubusercontent.com/pip-services-java/pip-services-commons-java/master/doc/api/org/pipservices/commons/data/IIdentifiable.html">IIdentifiable</a> interface.
  * <p>
  * In basic scenarios child classes shall only override <code>getPageByFilter()</code>,
  * <code>getListByFilter()</code> or <code>deleteByFilter()</code> operations with specific filter function.
