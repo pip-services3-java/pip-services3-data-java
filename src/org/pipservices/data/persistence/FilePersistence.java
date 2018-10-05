@@ -10,7 +10,7 @@ import org.pipservices.commons.errors.*;
  * This is the most basic persistence component that is only
  * able to store data items of any type. Specific CRUD operations
  * over the data items must be implemented in child classes by
- * accessing this._items property and calling save() method.
+ * accessing <code>this._items</code> property and calling <code>save()</code> method.
  * <p>
  * ### Configuration parameters ###
  * <ul>
@@ -19,7 +19,7 @@ import org.pipservices.commons.errors.*;
  * <p>
  * ### References ###
  * <ul>
- * <li>*:logger:*:*:1.0   (optional) {@link org.pipservices.components.log.ILogger} components to pass log messages
+ * <li>*:logger:*:*:1.0   (optional) <a href="https://raw.githubusercontent.com/pip-services-java/pip-services-components-java/master/doc/api/org/pipservices/components/log/ILogger.html">ILogger</a> components to pass log messages
  * </ul>
  * <p>
  * ### Example ###

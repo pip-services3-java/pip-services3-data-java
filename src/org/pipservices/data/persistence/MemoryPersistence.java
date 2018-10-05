@@ -22,7 +22,7 @@ import org.pipservices.data.*;
  * <p>
  * ### References ###
  * <ul>
- * <li>*:logger:*:*:1.0         (optional) {@link org.pipservices.components.log.ILogger} components to pass log messages
+ * <li>*:logger:*:*:1.0         (optional) <a href="https://raw.githubusercontent.com/pip-services-java/pip-services-components-java/master/doc/api/org/pipservices/components/log/ILogger.html">ILogger</a> components to pass log messages
  * </ul>
  * <p>
  * <pre>
