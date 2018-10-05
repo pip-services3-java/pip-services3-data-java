@@ -12,12 +12,13 @@ import com.fasterxml.jackson.databind.*;
 
 /**
  * Persistence component that loads and saves data from/to flat file.
- * 
- * It is used by FilePersistence, but can be useful on its own.
- * 
+ * <p>
+ * It is used by {@link FilePersistence}, but can be useful on its own.
+ * <p>
  * ### Configuration parameters ###
- * 
- * - path:          path to the file where data is stored
+ * <ul>
+ * <li>path:          path to the file where data is stored
+ * </ul>
  * <p>
  * ### Example ###
  * <pre>

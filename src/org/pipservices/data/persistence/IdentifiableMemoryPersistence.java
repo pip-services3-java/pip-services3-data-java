@@ -13,25 +13,29 @@ import org.pipservices.data.*;
 /**
  * Abstract persistence component that stores data in memory
  * and implements a number of CRUD operations over data items with unique ids.
- * The data items must implement IIdentifiable interface.
- * 
- * In basic scenarios child classes shall only override getPageByFilter(),
- * getListByFilter() or deleteByFilter() operations with specific filter function.
+ * The data items must implement {@link IIdentifiable} interface.
+ * <p>
+ * In basic scenarios child classes shall only override <code>getPageByFilter()</code>,
+ * <code>getListByFilter()</code> or <code>deleteByFilter()</code> operations with specific filter function.
  * All other operations can be used out of the box. 
- * 
+ * <p>
  * In complex scenarios child classes can implement additional operations by 
- * accessing cached items via this._items property and calling save() method
+ * accessing cached items via <code>this._items</code> property and calling <code>save()</code> method
  * on updates.
- * 
+ * <p>
  * ### Configuration parameters ###
- * 
- * options:
- *     max_page_size:       Maximum number of items returned in a single page (default: 100)
- * 
+ * <ul>
+ * <li>options:
+ *     <ul>
+ *     <li>max_page_size:       Maximum number of items returned in a single page (default: 100)
+ * 	   </ul>
+ * </ul>
+ * <p>
  * ### References ###
- * 
- * - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
- *  <p>
+ * <ul>
+ * <li>*:logger:*:*:1.0         (optional) {@link org.pipservices.components.log.ILogger} components to pass log messages
+ * </ul>
+ * <p>
  * ### Examples ###
  * <pre>
  * {@code

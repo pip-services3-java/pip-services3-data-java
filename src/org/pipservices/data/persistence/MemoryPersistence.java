@@ -10,20 +10,23 @@ import org.pipservices.data.*;
 
 /**
  * Abstract persistence component that stores data in memory.
- * 
+ * <p>
  * This is the most basic persistence component that is only
  * able to store data items of any type. Specific CRUD operations
  * over the data items must be implemented in child classes by
- * accessing this._items property and calling save() method.
- * 
+ * accessing <code>this._items</code> property and calling <code>save()</code> method.
+ * <p>
  * The component supports loading and saving items from another data source.
  * That allows to use it as a base class for file and other types
  * of persistence components that cache all data in memory. 
- * 
+ * <p>
  * ### References ###
- * 
- * - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
- * 
+ * <ul>
+ * <li>*:logger:*:*:1.0         (optional) {@link org.pipservices.components.log.ILogger} components to pass log messages
+ * </ul>
+ * <p>
+ * <pre>
+ * {@code
  * ### Example ###
  * 
  * class MyMemoryPersistence extends MemoryPersistence {
@@ -46,6 +49,8 @@ import org.pipservices.data.*;
  * 
  * persistence.set("123", new MyData("ABC"));
  * System.out.println(persistence.getByName("123", "ABC")).toString(); // Result: { name: "ABC" }
+ * }
+ * </pre>
  */
 public abstract class MemoryPersistence<T> implements IReferenceable, IOpenable, ICleanable {
 	protected Class<?> _type;

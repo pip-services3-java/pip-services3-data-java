@@ -6,19 +6,21 @@ import org.pipservices.commons.errors.*;
 /**
  * Abstract persistence component that stores data in flat files
  * and caches them in memory.
- * 
+ * <p>
  * This is the most basic persistence component that is only
  * able to store data items of any type. Specific CRUD operations
  * over the data items must be implemented in child classes by
  * accessing this._items property and calling save() method.
- * 
+ * <p>
  * ### Configuration parameters ###
- * 
- * path:                path to the file where data is stored
- * 
+ * <ul>
+ * <li>path:                path to the file where data is stored
+ * </ul>
+ * <p>
  * ### References ###
- * 
- * - *:logger:*:*:1.0   (optional) ILogger components to pass log messages
+ * <ul>
+ * <li>*:logger:*:*:1.0   (optional) {@link org.pipservices.components.log.ILogger} components to pass log messages
+ * </ul>
  * <p>
  * ### Example ###
  * <pre>
