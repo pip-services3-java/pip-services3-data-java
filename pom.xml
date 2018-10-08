@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.pipservices</groupId>
@@ -37,6 +36,7 @@
     <connection>scm:git:git@github.com:pip-services-java/pip-services-data-java.git</connection>
     <developerConnection>scm:git:git@github.com:pip-services-java/pip-services-data-java.git</developerConnection>
     <url>https://github.com/pip-services-java/pip-services-data-java</url>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
@@ -107,7 +107,7 @@
           <version>3.0.0</version>
           <configuration>
               <reportOutputDirectory>${basedir}/doc</reportOutputDirectory>
-              <destDir>api</destDir>
+              <destDir>${basedir}/doc/api</destDir>
 <!--
               <quiet>true</quiet>
               <nonavbar>true</nonavbar>
@@ -169,12 +169,12 @@
     <dependency>
         <groupId>org.pipservices</groupId>
         <artifactId>pip-services-commons</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </dependency>
     <dependency>
         <groupId>org.pipservices</groupId>
         <artifactId>pip-services-components</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>3.0.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
