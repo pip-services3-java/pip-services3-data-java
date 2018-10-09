@@ -36,7 +36,6 @@
     <connection>scm:git:git@github.com:pip-services-java/pip-services-data-java.git</connection>
     <developerConnection>scm:git:git@github.com:pip-services-java/pip-services-data-java.git</developerConnection>
     <url>https://github.com/pip-services-java/pip-services-data-java</url>
-    <tag>HEAD</tag>
   </scm>
 
   <properties>
