@@ -1,5 +1,5 @@
 {
-    "name": "pip-services-data",
+    "name": "pip-services3-data",
     "registry": "pipdevs",
     "version": "3.0.0",
     "build": "0"
