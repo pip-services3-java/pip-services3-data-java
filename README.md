@@ -1,19 +1,64 @@
-# <img src="https://github.com/pip-services/pip-services/raw/master/design/Logo.png" alt="Pip.Services Logo" style="max-width:30%"> <br/> Basic portable abstractions for Java
+# <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> Persistence components for Java
 
-This framework is a part of the Pip.Services project. This package contains various design patterns for working with data and provides implementation of reusable data processing and persistence components:
-- **MemoryPersistence** 
-- **IdentifiableMemoryPersistence**
-- **FilePersistence**
-- **IdentifiableFilePersistence**
+This module is a part of the [Pip.Services](http://pipservices.org) polyglot microservices toolkit. It contains generic interfaces for data access components as well as abstract implementations for in-memory and file persistence.
 
-Quick Links:
+The persistence components come in two kinds. The first kind is a basic persistence that can work with any object types and provides only minimal set of operations. 
+The second kind is so called "identifieable" persistence with works with "identifable" data objects, i.e. objects that have unique ID field. The identifiable persistence provides a full set or CRUD operations that covers most common cases.
 
-* [Downloads](https://github.com/pip-services3-java/pip-services3-data-java/blob/master/doc/Downloads.md)
-* [API Reference](http://htmlpreview.github.io/?https://github.com/pip-services3-java/pip-services3-data-java/blob/master/doc/api/index.html)
-* [Building and Testing](https://github.com/pip-services3-java/pip-services3-data-java/blob/master/doc/Development.md)
-* [Contributing](https://github.com/pip-services3-java/pip-services3-data-java/blob/master/doc/Development.md/#contrib)
+The module contains the following packages:
+- **Core** - generic interfaces for data access components. 
+- **Persistence** - in-memory and file persistence components, as well as JSON persister class.
 
-## Acknowledgements
+<a name="links"></a> Quick links:
+
+* [Memory persistence](https://www.pipservices.org/recipies/memory-persistence)
+* [API Reference](https://pip-services3-java.github.io/pip-services3-data-java/)
+* [Change Log](CHANGELOG.md)
+* [Get Help](https://www.pipservices.org/community/help)
+* [Contribute](https://www.pipservices.org/community/contribute)
+
+## Use
+
+Go to the pom.xml file in Maven project and add dependencies::
+```xml
+<dependency>
+  <groupId>org.pipservices3</groupId>
+  <artifactId>pip-services3-data</artifactId>
+  <version>3.0.0</version>
+</dependency>
+```
+
+## Develop
+
+For development you shall install the following prerequisites:
+* Java SE Development Kit 8+
+* Eclipse Java Photon or another IDE of your choice
+* Docker
+* Apache Maven
+
+Build the project:
+```bash
+mvn install
+```
+
+Run automated tests:
+```bash
+mvn test
+```
+
+Generate API documentation:
+```bash
+./docgen.ps1
+```
+
+Before committing changes run dockerized build and test as:
+```bash
+./build.ps1
+./test.ps1
+./clear.ps1
+```
+
+## Contacts
 
 The initial implementation is done by **Sergey Seroukhov**. Pip.Services team is looking for volunteers to 
 take ownership over Java implementation in the project.
