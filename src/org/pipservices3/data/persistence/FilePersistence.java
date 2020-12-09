@@ -19,7 +19,7 @@ import org.pipservices3.commons.errors.*;
  * <p>
  * ### References ###
  * <ul>
- * <li>*:logger:*:*:1.0   (optional) <a href="https://raw.githubusercontent.com/pip-services3-java/pip-services3-components-java/master/doc/api/org/pipservices3/components/log/ILogger.html">ILogger</a> components to pass log messages
+ * <li>*:logger:*:*:1.0   (optional) <a href="https://pip-services3-java.github.io/pip-services3-components-java/org/pipservices3/components/log/ILogger.html">ILogger</a> components to pass log messages
  * </ul>
  * <p>
  * ### Example ###

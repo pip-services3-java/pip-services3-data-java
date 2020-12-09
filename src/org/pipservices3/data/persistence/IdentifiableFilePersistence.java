@@ -7,7 +7,7 @@ import org.pipservices3.commons.errors.*;
 /**
  * Abstract persistence component that stores data in flat files
  * and implements a number of CRUD operations over data items with unique ids.
- * The data items must implement <a href="https://raw.githubusercontent.com/pip-services3-java/pip-services3-commons-java/master/doc/api/org/pipservices3/commons/data/IIdentifiable.html">IIdentifiable</a> interface.
+ * The data items must implement <a href="https://pip-services3-java.github.io/pip-services3-commons-java/org/pipservices3/commons/data/IIdentifiable.html">IIdentifiable</a> interface.
  * <p>
  * In basic scenarios child classes shall only override <code>getPageByFilter()</code>,
  * <code>getListByFilter()</code> or <code>deleteByFilter()</code> operations with specific filter function.
@@ -28,7 +28,7 @@ import org.pipservices3.commons.errors.*;
  * <p>
  * ### References ###
  * <ul>
- * <li>*:logger:*:*:1.0         (optional) <a href="https://raw.githubusercontent.com/pip-services3-java/pip-services3-components-java/master/doc/api/org/pipservices3/components/log/ILogger.html">ILogger</a> components to pass log messages
+ * <li>*:logger:*:*:1.0         (optional) <a href="https://pip-services3-java.github.io/pip-services3-components-java/org/pipservices3/components/log/ILogger.html">ILogger</a> components to pass log messages
  * </ul>
  * <p>
  * ### Examples ###
