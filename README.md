@@ -114,17 +114,17 @@ public class MyMemoryPersistence extends IdentifiableMemoryPersistence<MyObject,
     }
 
     public MyObject getOneByKey(String correlationId, String key) {
-        var item = this._items.stream().filter((el) -> el.getKey().equals(key)).findAny();
+        synchronized(this._lock) {
+          var item = this._items.stream().filter((el) -> el.getKey().equals(key)).findAny();
 
-        if (item.isPresent()) {
-            this._logger.trace(correlationId, "Found object by key=%s", key);
-        } else {
-            this._logger.trace(correlationId, "Cannot find by key=%s", key);
+          if (item.isPresent())
+              this._logger.trace(correlationId, "Found object by key=%s", key);
+          else
+              this._logger.trace(correlationId, "Cannot find by key=%s", key);
+          
+          return item.orElse(null);
         }
-
-        return item.orElse(null);
     }
-
 }
 ```
 
