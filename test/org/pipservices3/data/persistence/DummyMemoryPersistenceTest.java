@@ -16,14 +16,24 @@ public class DummyMemoryPersistenceTest {
         fixture = new DummyPersistenceFixture(db);
 	}
 
-	@Test
+    @Test
     public void testCrudOperations() throws ApplicationException {
         fixture.testCrudOperations();
     }
-	
-	@Test
+
+    @Test
     public void testBatchOperations() throws ApplicationException {
         fixture.testBatchOperations();
+    }
+
+    @Test
+    public void testPageSortingOperations() throws ApplicationException {
+        fixture.testPageSortingOperations();
+    }
+
+    @Test
+    public void testListSortingOperations() throws ApplicationException {
+        fixture.testListSortingOperations();
     }
 
 }

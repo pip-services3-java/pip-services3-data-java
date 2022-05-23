@@ -107,8 +107,8 @@ public class IdentifiableFilePersistence<T extends IIdentifiable<K>, K> extends 
 	 * Configures component by passing configuration parameters.
 	 * 
 	 * @param config configuration parameters to be set.
-	 * @throws ConfigException when configuration is wrong.
 	 */
+	@Override
 	public void configure(ConfigParams config) throws ConfigException {
 		super.configure(config);
 		_persister.configure(config);

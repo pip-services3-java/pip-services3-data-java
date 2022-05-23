@@ -24,14 +24,161 @@ Go to the pom.xml file in Maven project and add dependencies::
 <dependency>
   <groupId>org.pipservices3</groupId>
   <artifactId>pip-services3-data</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
 </dependency>
+```
+
+As an example, lets implement persistence for the following data object.
+
+```java
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.pipservices3.commons.data.IStringIdentifiable;
+
+public class MyObject implements IStringIdentifiable {
+    public MyObject() {}
+
+    public MyObject(String id, String key, String content) {
+        super();
+        this._id = id;
+        this._key = key;
+        this._content = content;
+    }
+
+
+    @JsonProperty("id")
+    private String _id;
+    public String getId() {	return _id; }
+    public void setId(String id) {	this._id = id;}
+
+    @JsonProperty("key")
+    private String _key;
+    public String getKey() { return _key; }
+    public void setKey(String key) { this._key = key; }
+
+    @JsonProperty("content")
+    private String _content;
+    public String getContent() { return _content; }
+    public void setContent(String content) { this._content = content; }
+}
+
+```
+
+Our persistence component shall implement the following interface with a basic set of CRUD operations.
+
+```java
+import org.pipservices3.commons.data.DataPage;
+import org.pipservices3.commons.data.FilterParams;
+import org.pipservices3.commons.data.PagingParams;
+import org.pipservices3.commons.errors.ApplicationException;
+
+
+public interface IMyPersistence {
+    DataPage<Dummy> getPageByFilter(String correlationId, FilterParams filter, PagingParams paging) throws ApplicationException;
+    Dummy getOneById(String correlationId, String dummyId) throws ApplicationException;
+    Dummy getOneByKey(String correlationId, String key) throws ApplicationException;
+    Dummy create(String correlationId, Dummy dummy) throws ApplicationException;
+    Dummy update(String correlationId, Dummy dummy) throws ApplicationException;
+
+    Dummy deleteById(String correlationId, String dummyId) throws ApplicationException;
+}
+```
+
+To implement in-memory persistence component you shall inherit `IdentifiableMemoryPersistence`.
+Most CRUD operations will come from the base class. You only need to override `getPageByFilter` method with a custom filter function.
+And implement a `getOneByKey` custom persistence method that doesn't exist in the base class.
+
+```java
+import org.pipservices3.commons.data.DataPage;
+import org.pipservices3.commons.data.FilterParams;
+import org.pipservices3.commons.data.PagingParams;
+
+import java.util.Objects;
+import java.util.function.Predicate;
+
+public class MyMemoryPersistence extends IdentifiableMemoryPersistence<MyObject, String> {
+    protected MyMemoryPersistence() {
+        super(MyObject.class);
+    }
+
+    private Predicate<MyObject> composeFilter(FilterParams filter) {
+        filter = filter != null ? filter : new FilterParams();
+        var key = filter.getAsNullableString("key");
+
+        return (item) -> {
+            return key == null || Objects.equals(item.getKey(), key);
+        };
+    }
+
+    public DataPage<MyObject> getPageByFilter(String correlationId, FilterParams filter, PagingParams paging) {
+        return super.getPageByFilter(correlationId, composeFilter(filter), paging, null);
+    }
+
+    public MyObject getOneByKey(String correlationId, String key) {
+        var item = this._items.stream().filter((el) -> el.getKey().equals(key)).findAny();
+
+        if (item.isPresent()) {
+            this._logger.trace(correlationId, "Found object by key=%s", key);
+        } else {
+            this._logger.trace(correlationId, "Cannot find by key=%s", key);
+        }
+
+        return item.orElse(null);
+    }
+
+}
+```
+
+It is easy to create file persistence by adding a persister object to the implemented in-memory persistence component.
+
+```java
+package org.pipservices3.data.persistence;
+
+import org.pipservices3.commons.config.ConfigParams;
+import org.pipservices3.commons.errors.ConfigException;
+
+public class MyFilePersistence extends MyMemoryPersistence {
+    protected JsonFilePersister<MyObject> _persister;
+
+    public MyFilePersistence() {
+
+    }
+
+    public MyFilePersistence(String path) {
+        if (path != null) {
+            this._persister = new JsonFilePersister<MyObject>(MyObject.class, path);
+            this._loader = this._persister;
+            this._saver = this._persister;
+        }
+    }
+
+    @Override
+    public void configure(ConfigParams config) throws ConfigException {
+        super.configure(config);
+        this._persister.configure(config);
+    }
+}
+
+```
+
+Configuration for your microservice that includes memory and file persistence may look the following way.
+
+```yaml
+...
+{{#if MEMORY_ENABLED}}
+- descriptor: "myservice:persistence:memory:default:1.0"
+{{/if}}
+
+{{#if FILE_ENABLED}}
+- descriptor: "myservice:persistence:file:default:1.0"
+  path: {{FILE_PATH}}{{#unless FILE_PATH}}"../data/data.json"{{/unless}}
+{{/if}}
+...
 ```
 
 ## Develop
 
 For development you shall install the following prerequisites:
-* Java SE Development Kit 8+
+* Java SE Development Kit 11+
 * Eclipse Java Photon or another IDE of your choice
 * Docker
 * Apache Maven

@@ -19,7 +19,7 @@ public class DummyFilePersistence extends DummyMemoryPersistence {
     	_loader = _persister;
     	_saver = _persister;
     }
-    
+    @Override
     public void configure(ConfigParams config) throws ConfigException {
         super.configure(config);
     	_persister.configure(config);

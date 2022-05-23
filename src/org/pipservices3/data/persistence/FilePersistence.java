@@ -84,9 +84,9 @@ public abstract class FilePersistence<T> extends MemoryPersistence<T> implements
 	 * Configures component by passing configuration parameters.
 	 * 
 	 * @param config configuration parameters to be set.
-	 * @throws ConfigException when configuration is wrong.
 	 */
-	public void configure(ConfigParams config) throws ConfigException {
+	@Override
+	public void configure(ConfigParams config) throws ConfigException{
 		_persister.configure(config);
 	}
 }

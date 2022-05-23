@@ -21,6 +21,7 @@ public class JsonFilePersisterTest {
     	
     	try {
 			_persister.configure(new ConfigParams());
+			fail("Exception not thrown");
 		} catch (Throwable  ex) {
 			e = ex;
 		}       
