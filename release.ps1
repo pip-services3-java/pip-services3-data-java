@@ -13,12 +13,9 @@ if ($component.version -ne $version) {
 
 # Verify release existence on nexus repository
 $mvnPackageUrl = "https://oss.sonatype.org/service/local/repositories/releases/content/org/pipservices/$($component.name)/$($component.version)/$($component.name)-$($component.version).jar"
-Write-Host "request url - $mvnPackageUrl"
 try {
    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
    $mvnResponceStatusCode = $(Invoke-WebRequest -Uri $mvnPackageUrl).StatusCode
-   Write-Host $mvnResponceStatusCode
-   Invoke-WebRequest -Uri $mvnPackageUrl
 } catch {
    $mvnResponceStatusCode = $_.Exception.Response.StatusCode.value__
 }
@@ -50,7 +47,7 @@ if (($env:GPG_PUBLIC_KEY -ne $null) -and ($env:GPG_PRIVATE_KEY -ne $null)) {
 } 
 
 # Create ~/.m2/settings.xml if not exists
-if (!(Test-Path "~/.m2/settings.xml")) {
+if (-not (Test-Path "~/.m2/settings.xml")) {
    # Create m2 config
    $m2SetingsContent = @"
 <?xml version="1.0" encoding="UTF-8"?>
@@ -91,7 +88,7 @@ if (!(Test-Path "~/.m2/settings.xml")) {
 "@
 
    # Save config
-   if (!(Test-Path "~/.m2")) {
+   if (-not (Test-Path "~/.m2")) {
       $null = New-Item -Path "~/.m2" -ItemType "directory"
    }
    Set-Content -Path "~/.m2/settings.xml" -Value $m2SetingsContent
@@ -103,17 +100,5 @@ mvn clean deploy
 
 # Verify mvn deploy result
 if ($LastExitCode -ne 0) {
-    Write-Error "mvn clean deploy failed. Watch logs above and check environment variables. If you run script from local machine - try to remove ~/.m2/settings.xml and rerun a script."
+    Write-Error "Release failed. Watch logs above and check environment variables. If you run script from local machine - try to remove ~/.m2/settings.xml and rerun a script."
 }
-
-# # Trigger a release of the staging repository
-# Write-Host "Waiting for staging repository..."
-# Start-Sleep -Seconds 120
-# Write-Host "Triggering a release of the staging repository..."
-# mvn nexus-staging:release
-
-# # Verify release result
-# if ($LastExitCode -ne 0) {
-#    # mvn nexus-staging:drop
-#    Write-Error "Release of the staging repository failed. The staging repository dropped."
-# }

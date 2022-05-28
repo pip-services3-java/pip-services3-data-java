@@ -6,3 +6,5 @@
 /data/dummies.json
 settings.xml
 genKey
+gpg_public.key
+gpg_private.key
