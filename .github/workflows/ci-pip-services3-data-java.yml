@@ -18,6 +18,8 @@ jobs:
     - name: Install prereq and save build number
       id: build_info
       uses: pip-devops/actions/java/prepare@v1
+      with:
+        java-version: 15.0.1
 
     ############# Build #############
 
