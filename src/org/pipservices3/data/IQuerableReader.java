@@ -1,9 +1,9 @@
 package org.pipservices3.data;
 
-import java.util.*;
+import org.pipservices3.commons.data.SortParams;
+import org.pipservices3.commons.errors.ApplicationException;
 
-import org.pipservices3.commons.data.*;
-import org.pipservices3.commons.errors.*;
+import java.util.List;
 
 /**
  * Interface for data processing components that can query a list of data items.

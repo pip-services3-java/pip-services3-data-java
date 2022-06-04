@@ -1,6 +1,6 @@
 package org.pipservices3.data;
 
-import org.pipservices3.commons.errors.*;
+import org.pipservices3.commons.errors.ApplicationException;
 
 /**
  * Interface for data processing components that can set (create or update) data items.

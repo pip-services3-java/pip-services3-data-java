@@ -1,8 +1,8 @@
 package org.pipservices3.data;
 
-import java.util.*;
+import org.pipservices3.commons.errors.ApplicationException;
 
-import org.pipservices3.commons.errors.*;
+import java.util.List;
 
 /**
  * Interface for data processing components that save data items.

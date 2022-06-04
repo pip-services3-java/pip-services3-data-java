@@ -1,7 +1,10 @@
 package org.pipservices3.data;
 
-import org.pipservices3.commons.data.*;
-import org.pipservices3.commons.errors.*;
+import org.pipservices3.commons.data.DataPage;
+import org.pipservices3.commons.data.FilterParams;
+import org.pipservices3.commons.data.PagingParams;
+import org.pipservices3.commons.data.SortParams;
+import org.pipservices3.commons.errors.ApplicationException;
 
 /**
  * Interface for data processing components that can retrieve a page of data items by a filter.

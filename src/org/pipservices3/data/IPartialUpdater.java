@@ -1,6 +1,5 @@
 package org.pipservices3.data;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.pipservices3.commons.data.AnyValueMap;
 import org.pipservices3.commons.errors.ApplicationException;
 

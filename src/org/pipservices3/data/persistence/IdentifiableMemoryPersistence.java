@@ -1,14 +1,21 @@
 package org.pipservices3.data.persistence;
 
-import java.util.*;
-import java.util.stream.*;
-
-import org.pipservices3.commons.config.*;
-import org.pipservices3.commons.data.*;
-import org.pipservices3.commons.errors.*;
+import org.pipservices3.commons.config.IConfigurable;
+import org.pipservices3.commons.data.AnyValueMap;
+import org.pipservices3.commons.data.IIdentifiable;
+import org.pipservices3.commons.data.IStringIdentifiable;
+import org.pipservices3.commons.data.IdGenerator;
+import org.pipservices3.commons.errors.ApplicationException;
 import org.pipservices3.commons.reflect.ObjectReader;
 import org.pipservices3.commons.reflect.ObjectWriter;
 import org.pipservices3.data.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Abstract persistence component that stores data in memory
@@ -116,7 +123,7 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
      * @return data list of items.
      */
     protected List<T> findAll(K[] ids) {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
         for (K id : ids) {
             Optional<T> item = _items.stream().filter((v) -> v.getId().equals(id)).findAny();
             result.add(item.orElse(null));
@@ -131,9 +138,8 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
      *                      call chain.
      * @param id            an id of data item to be retrieved.
      * @return data item.
-     * @throws ApplicationException when error occured.
      */
-    public T getOneById(String correlationId, K id) throws ApplicationException {
+    public T getOneById(String correlationId, K id) {
         synchronized (_lock) {
             T item = findOne(id);
             if (item != null)
@@ -151,10 +157,9 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
      *                      call chain.
      * @param ids           ids of data items to be retrieved
      * @return a data list.
-     * @throws ApplicationException when error occured.
      */
-    public List<T> getListByIds(String correlationId, K[] ids) throws ApplicationException {
-        List<T> result = new ArrayList<T>();
+    public List<T> getListByIds(String correlationId, K[] ids)  {
+        List<T> result = new ArrayList<>();
         for (K oneId : ids) {
             T item = getOneById(correlationId, oneId);
             if (item != null)
@@ -170,10 +175,9 @@ public class IdentifiableMemoryPersistence<T extends IIdentifiable<K>, K> extend
      *                      call chain.
      * @param ids           ids of data items to be retrieved
      * @return a data list.
-     * @throws ApplicationException when error occured.
      */
-    public List<T> getListByIds(String correlationId, List<K> ids) throws ApplicationException {
-        List<T> result = new ArrayList<T>();
+    public List<T> getListByIds(String correlationId, List<K> ids) {
+        List<T> result = new ArrayList<>();
         for (K oneId : ids) {
             T item = getOneById(correlationId, oneId);
             if (item != null)

@@ -1,14 +1,19 @@
 package org.pipservices3.data.persistence;
 
-import java.io.*;
-import java.util.*;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.pipservices3.commons.config.ConfigParams;
+import org.pipservices3.commons.config.IConfigurable;
+import org.pipservices3.commons.errors.ApplicationException;
+import org.pipservices3.commons.errors.ConfigException;
+import org.pipservices3.commons.errors.FileException;
+import org.pipservices3.components.log.CompositeLogger;
+import org.pipservices3.data.ILoader;
+import org.pipservices3.data.ISaver;
 
-import org.pipservices3.commons.config.*;
-import org.pipservices3.commons.errors.*;
-import org.pipservices3.components.log.*;
-import org.pipservices3.data.*;
-
-import com.fasterxml.jackson.databind.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Persistence component that loads and saves data from/to flat file.
@@ -126,7 +131,7 @@ public class JsonFilePersister<T> implements ILoader<T>, ISaver<T>, IConfigurabl
 
         // If doesn't exist then consider empty data
         if (!file.exists())
-            return new ArrayList<T>();
+            return new ArrayList<>();
         try {
             return _mapper.readValue(file, _typeRef);
         } catch (Exception ex) {

@@ -1,7 +1,7 @@
 package org.pipservices3.data;
 
-import org.pipservices3.commons.data.*;
-import org.pipservices3.commons.errors.*;
+import org.pipservices3.commons.data.IIdentifiable;
+import org.pipservices3.commons.errors.ApplicationException;
 
 /**
  * Interface for data processing components that can create, update and delete data items.

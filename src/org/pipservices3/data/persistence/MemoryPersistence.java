@@ -1,24 +1,29 @@
 package org.pipservices3.data.persistence;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.pipservices3.commons.config.ConfigParams;
 import org.pipservices3.commons.config.IConfigurable;
 import org.pipservices3.commons.convert.JsonConverter;
 import org.pipservices3.commons.data.DataPage;
 import org.pipservices3.commons.data.PagingParams;
-import org.pipservices3.commons.errors.*;
+import org.pipservices3.commons.errors.ApplicationException;
+import org.pipservices3.commons.errors.ConfigException;
 import org.pipservices3.commons.random.RandomInteger;
-import org.pipservices3.commons.refer.*;
-import org.pipservices3.commons.run.*;
+import org.pipservices3.commons.refer.IReferenceable;
+import org.pipservices3.commons.refer.IReferences;
+import org.pipservices3.commons.run.ICleanable;
+import org.pipservices3.commons.run.IOpenable;
 import org.pipservices3.components.log.CompositeLogger;
-import org.pipservices3.data.*;
+import org.pipservices3.data.ILoader;
+import org.pipservices3.data.ISaver;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Abstract persistence component that stores data in memory.
@@ -70,7 +75,7 @@ public abstract class MemoryPersistence<T> implements IConfigurable, IReferencea
 
     protected CompositeLogger _logger = new CompositeLogger();
 
-    protected List<T> _items = new ArrayList<T>();
+    protected List<T> _items = new ArrayList<>();
     protected ILoader<T> _loader;
     protected ISaver<T> _saver;
     protected boolean _opened = false;
@@ -117,10 +122,9 @@ public abstract class MemoryPersistence<T> implements IConfigurable, IReferencea
      * Sets references to dependent components.
      *
      * @param references references to locate the component dependencies.
-     * @throws ReferenceException when no found references.
      */
     @Override
-    public void setReferences(IReferences references) throws ReferenceException {
+    public void setReferences(IReferences references) {
         _logger.setReferences(references);
     }
 
@@ -191,7 +195,7 @@ public abstract class MemoryPersistence<T> implements IConfigurable, IReferencea
      */
     public void clear(String correlationId) throws ApplicationException {
         synchronized (_lock) {
-            _items = new ArrayList<T>();
+            _items = new ArrayList<>();
             _logger.trace(correlationId, "Cleared %s", _typeName);
             save(correlationId);
         }
@@ -242,7 +246,7 @@ public abstract class MemoryPersistence<T> implements IConfigurable, IReferencea
 
             _logger.trace(correlationId, "Retrieved %d of %s", data.size(), _typeName);
 
-            return new DataPage<T>(data, total);
+            return new DataPage<>(data, total);
         }
     }
 
@@ -272,7 +276,7 @@ public abstract class MemoryPersistence<T> implements IConfigurable, IReferencea
         if (select != null)
             items = page.getData().stream().map(select).collect(Collectors.toList());
 
-        return new DataPage<T>(items, total);
+        return new DataPage<>(items, total);
     }
 
     /**

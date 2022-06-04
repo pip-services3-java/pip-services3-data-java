@@ -1,7 +1,7 @@
 package org.pipservices3.data;
 
-import org.pipservices3.commons.errors.*;
-import org.pipservices3.commons.data.*;
+import org.pipservices3.commons.data.AnyValueMap;
+import org.pipservices3.commons.errors.ApplicationException;
 
 public interface IDynamicWriter<T, K> {
 	T create(String correlationId, AnyValueMap entityData) throws ApplicationException;

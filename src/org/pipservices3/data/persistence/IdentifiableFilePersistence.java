@@ -1,8 +1,8 @@
 package org.pipservices3.data.persistence;
 
-import org.pipservices3.commons.config.*;
-import org.pipservices3.commons.data.*;
-import org.pipservices3.commons.errors.*;
+import org.pipservices3.commons.config.ConfigParams;
+import org.pipservices3.commons.data.IIdentifiable;
+import org.pipservices3.commons.errors.ConfigException;
 
 /**
  * Abstract persistence component that stores data in flat files
@@ -92,8 +92,8 @@ public class IdentifiableFilePersistence<T extends IIdentifiable<K>, K> extends 
 	 *                  from/to flat file.
 	 */
 	protected IdentifiableFilePersistence(Class<T> type, JsonFilePersister<T> persister) {
-		super(type, persister == null ? new JsonFilePersister<T>(type) : persister,
-				persister == null ? new JsonFilePersister<T>(type) : persister);
+		super(type, persister == null ? new JsonFilePersister<>(type) : persister,
+				persister == null ? new JsonFilePersister<>(type) : persister);
 
 		_persister = persister;
 //    	super(type);
