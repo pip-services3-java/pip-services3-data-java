@@ -272,7 +272,7 @@ public abstract class MemoryPersistence<T> implements IConfigurable, IReferencea
         DataPage<T> page = getPageByFilter(correlationId, filter, paging, sort);
 
         Long total = page.getTotal();
-        List<T> items = new ArrayList<>();
+        List<T> items = page.getData();
         if (select != null)
             items = page.getData().stream().map(select).collect(Collectors.toList());
 
